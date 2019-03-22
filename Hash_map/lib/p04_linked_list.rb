@@ -16,6 +16,10 @@ class Node
   def remove
     self.prev.next, self.next.prev = self.next, self.prev
   end
+
+  def inspect
+    "#{key}, #{val}"
+  end
 end
 
 class LinkedList
