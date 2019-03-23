@@ -27,6 +27,7 @@ class StaticArray
 end
 
 class DynamicArray
+  include Enumerable
   attr_accessor :count
 
   def initialize(capacity = 8)
@@ -35,9 +36,11 @@ class DynamicArray
   end
 
   def [](i)
+    @store[i]
   end
 
   def []=(i, val)
+    @store[i] = val
   end
 
   def capacity
@@ -45,15 +48,26 @@ class DynamicArray
   end
 
   def include?(val)
+    self.each do |el|
+      return true if el == val
+    end
+    false
   end
 
   def push(val)
+    self[@count] = val
+    @count += 1
   end
 
   def unshift(val)
   end
 
   def pop
+    return nil if @count == 0
+    val = @store[@count - 1]
+    @store[@count - 1] = nil
+    @count -= 1
+    val
   end
 
   def shift
@@ -65,7 +79,10 @@ class DynamicArray
   def last
   end
 
-  def each
+  def each(&prc)
+    (0...@store.length).each do |el|
+      prc.call(@store[el])
+    end
   end
 
   def to_s
